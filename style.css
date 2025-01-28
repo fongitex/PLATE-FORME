@@ -1,0 +1,63 @@
+﻿body {
+    background-color: #212121;
+    color: #F5F5F5;
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+#loginContainer, #uploadContainer {
+    text-align: center;
+    margin-top: 50px;
+}
+
+#uploadContainer {
+    display: none;
+}
+
+input, button {
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+    border: 1px solid #333;
+    background-color: #333;
+    color: #F5F5F5;
+}
+
+button {
+    cursor: pointer;
+    background-color: #FF5722;
+}
+
+button:hover {
+    background-color: #FF3D00;
+}
+
+#fileTable {
+    width: 80%;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    border-collapse: collapse;
+}
+
+#fileTable th, #fileTable td {
+    border: 1px solid #555;
+    padding: 10px;
+    text-align: center;
+}
+
+#fileTable th {
+    background-color: #333;
+    color: #FF5722;
+}
+
+footer {
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #333;
+    color: #FF5722;
+    padding: 10px;
+}

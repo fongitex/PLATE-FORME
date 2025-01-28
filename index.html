@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plate-forme de Téléchargement</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="loginContainer">
+        <h2>Entrez le mot de passe pour accéder à la plateforme</h2>
+        <input type="text" id="username" placeholder="Nom d'utilisateur" required>
+        <input type="password" id="password" placeholder="Mot de passe" required>
+        <button onclick="login()">Se connecter</button>
+    </div>
+
+    <div id="uploadContainer" style="display:none;">
+        <h2>Plateforme de Gestion des Rapports Réglementaires pour Renault - LPEE</h2>
+        <form id="uploadForm" onsubmit="uploadFile(event)">
+            <input type="file" id="fileInput" required>
+            <button type="submit">Importer un fichier</button>
+        </form>
+
+        <table id="fileTable">
+            <thead>
+                <tr>
+                    <th>Nom du fichier</th>
+                    <th>Télécharger</th>
+                    <th>Supprimer</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <footer>
+        <p>© Geanah 2025</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
