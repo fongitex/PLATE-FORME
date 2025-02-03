@@ -88,3 +88,85 @@ function deleteFile(button) {
         alert("Mot de passe incorrect. Action non autorisée.");
     }
 }
+const CLIENT_ID = "TA_CLIENT_ID";  // Remplace avec ton Client ID
+const API_KEY = "TA_CLE_API";  // Remplace avec ta clé API
+const SCOPES = "https://www.googleapis.com/auth/drive.file";
+
+let tokenClient;
+let accessToken = null;
+
+// Fonction pour l'authentification Google
+function initAuth() {
+    tokenClient = google.accounts.oauth2.initTokenClient({
+        client_id: CLIENT_ID,
+        scope: SCOPES,
+        callback: (tokenResponse) => {
+            accessToken = tokenResponse.access_token;
+            document.getElementById("uploadBtn").disabled = false;
+            alert("Connecté avec succès !");
+            afficherFichiers();
+        }
+    });
+}
+
+// Connexion Google
+document.getElementById("loginBtn").addEventListener("click", () => {
+    tokenClient.requestAccessToken();
+});
+
+// Fonction pour uploader un fichier
+async function uploadFile() {
+    const fileInput = document.getElementById("fileInput").files[0];
+    if (!fileInput || !accessToken) {
+        alert("Sélectionne un fichier et connecte-toi !");
+        return;
+    }
+
+    const metadata = {
+        name: fileInput.name,
+        mimeType: fileInput.type,
+    };
+
+    const formData = new FormData();
+    formData.append("metadata", new Blob([JSON.stringify(metadata)], { type: "application/json" }));
+    formData.append("file", fileInput);
+
+    const response = await fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart", {
+        method: "POST",
+        headers: {
+            Authorization: `Bearer ${accessToken}`,
+        },
+        body: formData,
+    });
+
+    const result = await response.json();
+    if (result.id) {
+        alert("Fichier uploadé avec succès !");
+        afficherFichiers();
+    } else {
+        alert("Erreur d'upload !");
+        console.error(result);
+    }
+}
+
+// Bouton upload
+document.getElementById("uploadBtn").addEventListener("click", uploadFile);
+
+// Fonction pour lister les fichiers sur Google Drive
+async function afficherFichiers() {
+    if (!accessToken) return;
+
+    const response = await fetch("https://www.googleapis.com/drive/v3/files", {
+        headers: { Authorization: `Bearer ${accessToken}` }
+    });
+
+    const data = await response.json();
+    let fileList = document.getElementById("fileList");
+    fileList.innerHTML = "";
+
+    data.files.forEach(file => {
+        let li = document.createElement("li");
+        li.innerHTML = `<a href="https://drive.google.com/file/d/${file.id}/view" target="_blank">${file.name}</a>`;
+        fileList.appendChild(li);
+    });
+}
